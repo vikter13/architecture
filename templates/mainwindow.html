@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>mainwindow</title>
+</head>
+<body>
+    <div class="container">
+        <h1>you're logged in</h1>
+        <a href="{{ url_for('home') }}" class="link-container">logout</a>
+    </div>
+
+    <div class="container">
+        <form action="/add_place" method="post">
+            <label for="latitude">Latitude:</label>
+            <input type="text" id="latitude" name="latitude" required><br><br>
+            
+            <label for="longitude">Longitude:</label>
+            <input type="text" id="longitude" name="longitude" required><br><br>
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            
+            <input type="submit" value="Add Place">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 ## basic
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
@@ -40,6 +40,13 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
 
+class Place(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
 class registerForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "username"})
     password = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "password"})
@@ -61,6 +68,7 @@ class loginForm(FlaskForm):
 def home():
     return render_template('home.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = loginForm()
@@ -70,9 +78,10 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('mainwindow'))
 
     return render_template('login.html', form=form)
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
@@ -80,10 +89,24 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+
+@app.route('/mainwindow', methods=['GET', 'POST'])
 @login_required
-def dashboard():
-    return render_template('dashboard.html')
+def mainwindow():
+    return render_template('mainwindow.html')
+
+
+@app.route('/add_place', methods=['POST'])
+@login_required
+def add_place():
+    latitude = request.form['latitude']
+    longitude = request.form['longitude']
+    name = request.form['name']
+    new_place = Place(latitude=latitude, longitude=longitude, name=name, user_id=current_user.id)
+    db.session.add(new_place)
+    db.session.commit()
+    return redirect(url_for('mainwindow'))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -98,6 +121,7 @@ def register():
 
     return render_template('register.html', form=form)
 
+
 @app.route('/visits')
 def visits():
     if 'visits' in session:
@@ -108,6 +132,7 @@ def visits():
     count_visit = session['visits']
 
     return render_template('/visits.html', count_visit=count_visit)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
