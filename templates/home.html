@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>home page</title>
+</head>
+<body class="home-page">
+    <div class="container">
+        <h1>login authentication. We were waiting for you!</h1>
+        <a href="{{url_for('login')}}" class="link-container">login page is here</a><br> <!-- br is for чтобы короче переносилось на новую строку следующее -->
+        <a href="{{url_for('register')}}" class="link-container">register page is here</a><br> 
+        <a href="{{url_for('visits')}}" class="link-container">if you want to see visits – click here</a>
+    </div>
+</body>
+</html>

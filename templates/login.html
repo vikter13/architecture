@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>login page</title>
+</head>
+<body>
+    <div class="container">
+        <h1>login</h1>
+        <form method="post" action="" class="form-container">
+            {{ form.hidden_tag() }} <!-- скрытое поле для генерации csrf токена (случайное число установленное сервером в рамках одной сессии) -->
+            {{ form.username }}
+            {{ form.password }}
+            {{ form.submit }}
+        </form>
+        <a href="{{url_for('register')}}" class="link-container">you don't have an account?</a>
+    </div>
+</body>
+</html>
