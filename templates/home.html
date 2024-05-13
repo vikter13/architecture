@@ -4,9 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <title>home page</title>
 </head>
 <body class="home-page">
+<header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">ThemPlace</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Места</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Аккаунт</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Выход</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-5">
+        <section class="row">
+            <div class="col-md-6">
+                <h2>Поиск Мест</h2>
+                <div class="input-group mb-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Введите ключевое слово" list="placesList" oninput="searchPlaces()">
+                    <datalist id="placesList" onchange="selectPlace()">
+                        <!-- Сюда будут добавлены названия отмеченных мест -->
+                    </datalist>
+                    <button class="btn btn-primary" type="button" onclick="searchPlaces()">Найти</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Карта</h2>
+                <div id="map" style="height: 460px;">
+                    <!-- Здесь будет карта pt=pm2rdm~{{ longitude }},{{ latitude }} -->
+                    <img src="https://static-maps.yandex.ru/v1?pt={{ coordinates }},pm2rdm&lang=ru_RU&size=450,450&z=13&apikey={{ API_KEY }}" alt="{{ name }}">
+                </div>
+            </div>
+        </section>
+
+        <section class="row mt-5">
+            <div class="col-md-6">
+                <h2>Отмеченные Места</h2>
+                <ul class="list-group" style="overflow-y: scroll; max-height: 300px;">
+                    <!-- Создание элементов списка из данных о местах -->
+                    {% for place in places %}
+                    <li class="list-group-item">{{ place.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2>Друзья</h2>
+                <ul class="list-group">
+                    <!-- Создание элементов списка из данных о друзьях -->
+                    {% for friend in friends %}
+                    <li class="list-group-item">{{ friend.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="mt-5 text-center">
+        <p>&copy; 2024 ThemPlace</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Здесь будет подключение карты -->
+    <script>
+        // Код для подключения карты
+    </script>
+
+
+
+
     <div class="container">
         <h1>login authentication. We were waiting for you!</h1>
         <a href="{{url_for('login')}}" class="link-container">login page is here</a><br> <!-- br is for чтобы короче переносилось на новую строку следующее -->
